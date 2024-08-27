@@ -55,7 +55,8 @@ const books = [
     description:
       "Alice's Adventures in Wonderland (commonly Alice in Wonderland) is an 1865 English children's novel by Lewis Carroll, a mathematics don at Oxford University. It details the story of a young girl named Alice who falls through a rabbit hole into a fantasy world of anthropomorphic creatures.",
     author: "Lewis Carroll",
-    cover: "/books/alice.jpg",
+    cover:
+      "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1553383690l/2657.jpg",
     genre: "Children",
     pages: 128,
     isRented: false,
@@ -71,7 +72,8 @@ const books = [
     description:
       "Pride and Prejudice follows the turbulent relationship between Elizabeth Bennet, the daughter of a country gentleman, and Fitzwilliam Darcy, a rich aristocratic landowner. They must overcome the titular sins of pride and prejudice in order to fall in love and marry.",
     author: "Jane Austen",
-    cover: "/books/pandp.jpg",
+    cover:
+      "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1320399351l/1885.jpg",
     genre: "Classic",
     pages: 280,
     isRented: false,
@@ -87,7 +89,8 @@ const books = [
     description:
       "War and Peace broadly focuses on Napoleon's invasion of Russia in 1812 and follows three of the most well-known characters in literature: Pierre Bezukhov, the illegitimate son of a count who is fighting for his inheritance and yearning for spiritual fulfillment;",
     author: "Leo Tolstoy",
-    cover: "/books/war-and-peace.jpg",
+    cover:
+      "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1361039443l/41865.jpg",
     genre: "Historical Fiction",
     pages: 928,
     isRented: false,
@@ -103,7 +106,8 @@ const books = [
     description:
       "The story of a brilliant man whose unflinching dedication to independence of thought and transparency in business sparked an entire industry--and whose personal tribulations humbled and strengthened him. Through it all, Alfred Best remained the eternal optimist.",
     author: "AM Best",
-    cover: "/books/the_man.jpg",
+    cover:
+      "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1546103428l/5297.jpg",
     genre: "Biography",
     pages: 700,
     isRented: true,
@@ -123,7 +127,8 @@ const books = [
     description:
       "The Alchemist is a novel by Brazilian 'author' Paulo Coelho which was first published in 1988. Originally written in Portuguese, it became a widely translated international bestseller.",
     author: "Paulo Coelho",
-    cover: "/books/alchemist.jpg",
+    cover:
+      "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1327872220l/24213.jpg",
     genre: "Fiction",
     pages: 280,
     isRented: false,
@@ -139,7 +144,8 @@ const books = [
     description:
       "Herman Melville's Moby Dick is the story of Captain Ahab's self-destructive obsession with the white whale called Moby Dick. It is told through the narration of Ishmael, a sailor new to Ahab's ship, the Pequod. The plot of the novel follows Ahab's manic drive to kill the whale, even as it endangers his crew.",
     author: "Herman Melville",
-    cover: "/books/mobydick.jpg",
+    cover:
+      "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1557343311l/10210._SY475_.jpg",
     genre: "Novels",
     pages: 320,
     isRented: false,

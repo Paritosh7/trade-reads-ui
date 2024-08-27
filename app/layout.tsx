@@ -6,6 +6,7 @@ import { Breadcrumb, Layout, Menu, theme } from "antd";
 import { Content, Footer, Header } from "antd/es/layout/layout";
 import Navbar from "./components/navbar/NavBar";
 import ContentWrapper from "./components/wrapper/ContentWrapper";
+import BookList from "./components/books/BookList";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,16 +27,13 @@ export default function RootLayout({
           <Header className="flex items-center justify-between gap-2">
             <Navbar />
           </Header>
-          <Content style={{ padding: "0 48px" }}>
-            <ContentWrapper>
-              <p>Hello</p>
-            </ContentWrapper>
+          <Content className="mt-8 min-h-svh" style={{ padding: "0 48px" }}>
+            <ContentWrapper>{children}</ContentWrapper>
           </Content>
           <Footer style={{ textAlign: "center" }}>
             TradeReads ©{new Date().getFullYear()} Build by Paritosh Sahni
           </Footer>
         </Layout>
-        {children}
       </body>
     </html>
   );
