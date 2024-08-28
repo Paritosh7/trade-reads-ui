@@ -1,38 +1,57 @@
-"use client";
-
-import React from "react";
-import { UserOutlined, SmileOutlined } from "@ant-design/icons";
+import React, { useState } from "react";
+import { UserOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
-import { Dropdown, Space } from "antd";
-import { Avatar } from "antd";
-import Link from "next/link";
+import { Dropdown, Space, Avatar } from "antd";
+import LoginModal from "../modals/LoginModal";
+import SignupModal from "../modals/SignupModal";
 
-const items: MenuProps["items"] = [
-  {
-    key: "1",
-    label: <Link href="">Login</Link>,
-  },
-  {
-    key: "2",
-    label: <Link href="">Logout</Link>,
-  },
-  {
-    key: "3",
-    label: <Link href="">Another one</Link>,
-  },
-];
+const UserNav: React.FC = () => {
+  const [isLoginModalVisible, setIsLoginModalVisible] = useState(false);
+  const [isSignupModalVisible, setIsSignupModalVisible] = useState(false);
 
-const App: React.FC = () => (
-  <Dropdown menu={{ items }}>
-    <Space wrap size={16}>
-      <Avatar
-        className="bg-[#1777FF] cursor-pointer"
-        shape="square"
-        size="default"
-        icon={<UserOutlined />}
-      />
-    </Space>
-  </Dropdown>
-);
+  const items: MenuProps["items"] = [
+    {
+      key: "login-1",
+      label: <span onClick={() => handleMenuClick("login")}>Login</span>,
+    },
+    {
+      key: "logout-2",
+      label: <span onClick={() => handleMenuClick("signup")}>Signup</span>,
+    },
+  ];
 
-export default App;
+  const handleMenuClick = (action: "login" | "signup") => {
+    if (action === "login") {
+      setIsLoginModalVisible(true);
+    } else if (action === "signup") {
+      setIsSignupModalVisible(true);
+    }
+  };
+
+  const closeLoginModal = () => {
+    setIsLoginModalVisible(false);
+  };
+
+  const closeSignupModal = () => {
+    setIsSignupModalVisible(false);
+  };
+
+  return (
+    <>
+      <Dropdown menu={{ items }}>
+        <Space wrap size={16}>
+          <Avatar
+            className="bg-[#1777FF] cursor-pointer"
+            shape="square"
+            size="default"
+            icon={<UserOutlined />}
+          />
+        </Space>
+      </Dropdown>
+      <LoginModal visible={isLoginModalVisible} onClose={closeLoginModal} />
+      <SignupModal visible={isSignupModalVisible} onClose={closeSignupModal} />
+    </>
+  );
+};
+
+export default UserNav;
