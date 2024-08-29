@@ -18,7 +18,7 @@ const SignupModal: React.FC<SignupModalProps> = ({ visible, onClose }) => {
 
     const formData = { email, password1, password2 };
 
-    const response = await apiService.post(
+    const response = await apiService.postWithoutToken(
       "/api/auth/register/",
       JSON.stringify(formData)
     );

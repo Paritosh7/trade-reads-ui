@@ -38,3 +38,9 @@ export async function getUserId() {
   console.log("userId inside getUserId", userId);
   return userId ? userId : null;
 }
+
+export async function getAccessToken() {
+  let accessToken = cookies().get("session_access_token")?.value;
+  console.log(accessToken);
+  return accessToken;
+}

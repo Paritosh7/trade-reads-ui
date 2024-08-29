@@ -20,7 +20,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ visible, onClose }) => {
 
     const formData = { email, password };
 
-    const response = await apiService.post(
+    const response = await apiService.postWithoutToken(
       "/api/auth/login/",
       JSON.stringify(formData)
     );

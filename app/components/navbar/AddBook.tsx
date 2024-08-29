@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button, Modal } from "antd";
 import LoginModal from "../modals/LoginModal";
 import { useRouter } from "next/navigation";
+import AddBookModal from "../modals/AddBookModal";
 
 interface AddBookProps {
   userId?: string | null;
@@ -35,31 +36,12 @@ const AddBook: React.FC<AddBookProps> = ({ userId }) => {
 
   return (
     <>
-      <div className="text-white cursor-pointer" onClick={showModal}>
-        Add your book
-      </div>
-      <Modal
-        title="Basic Modal"
-        open={isModalOpen}
-        onOk={handleOk}
-        onCancel={handleCancel}
-      >
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-      </Modal>
-      {/* Add Book Modal */}
-      <Modal
-        title="Add a New Book"
-        open={isModalOpen}
-        onOk={handleOk}
-        onCancel={handleCancel}
-      >
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-      </Modal>
-
+      <AddBookModal
+        showModal={showModal}
+        isModalOpen={isModalOpen}
+        handleOk={handleOk}
+        handleCancel={handleCancel}
+      />
       {/* Login Modal */}
       <LoginModal visible={isLoginModalOpen} onClose={handleLoginClose} />
     </>
