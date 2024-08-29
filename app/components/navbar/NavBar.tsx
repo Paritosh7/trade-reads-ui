@@ -5,8 +5,22 @@ import UserNav from "./UserNav";
 import AddBook from "./AddBook";
 import SearchReads from "./SearchReads";
 import Link from "next/link";
+import { useCallback, useEffect, useState } from "react";
+import { getUserId } from "@/app/lib/actions";
 
 const Navbar = () => {
+  const [userId, setUserId] = useState<string | null>(null);
+
+  const fetchUserId = useCallback(async () => {
+    console.log("Am I being called");
+    const user = await getUserId();
+    setUserId(user);
+  }, []);
+
+  useEffect(() => {
+    fetchUserId();
+  }, [fetchUserId]);
+
   return (
     <>
       <Link className="flex" href={"/"}>
@@ -16,8 +30,8 @@ const Navbar = () => {
       <SearchReads />
 
       <div className="flex gap-4">
-        <AddBook />
-        <UserNav />
+        <AddBook userId={userId} />
+        <UserNav userId={userId} onUserStateChange={fetchUserId} />
       </div>
     </>
   );

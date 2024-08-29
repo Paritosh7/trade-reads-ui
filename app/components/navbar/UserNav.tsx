@@ -4,21 +4,44 @@ import type { MenuProps } from "antd";
 import { Dropdown, Space, Avatar } from "antd";
 import LoginModal from "../modals/LoginModal";
 import SignupModal from "../modals/SignupModal";
+import { useRouter } from "next/navigation";
+import { resetAuthCookies } from "@/app/lib/actions";
 
-const UserNav: React.FC = () => {
+interface UserNavProps {
+  userId?: string | null;
+  onUserStateChange: () => void;
+}
+
+const UserNav: React.FC<UserNavProps> = ({ userId, onUserStateChange }) => {
+  const router = useRouter();
+  console.log(userId);
+
   const [isLoginModalVisible, setIsLoginModalVisible] = useState(false);
   const [isSignupModalVisible, setIsSignupModalVisible] = useState(false);
 
-  const items: MenuProps["items"] = [
-    {
-      key: "login-1",
-      label: <span onClick={() => handleMenuClick("login")}>Login</span>,
-    },
-    {
-      key: "logout-2",
-      label: <span onClick={() => handleMenuClick("signup")}>Signup</span>,
-    },
-  ];
+  const items: MenuProps["items"] = userId
+    ? [
+        {
+          key: "logout",
+          label: <span onClick={() => submitLogout()}>Logout</span>,
+        },
+      ]
+    : [
+        {
+          key: "login",
+          label: <span onClick={() => handleMenuClick("login")}>Login</span>,
+        },
+        {
+          key: "signup",
+          label: <span onClick={() => handleMenuClick("signup")}>Signup</span>,
+        },
+      ];
+
+  const submitLogout = async () => {
+    await resetAuthCookies();
+    onUserStateChange();
+    router.refresh();
+  };
 
   const handleMenuClick = (action: "login" | "signup") => {
     if (action === "login") {
@@ -28,12 +51,14 @@ const UserNav: React.FC = () => {
     }
   };
 
-  const closeLoginModal = () => {
+  const closeLoginModal = async () => {
     setIsLoginModalVisible(false);
+    await onUserStateChange();
   };
 
-  const closeSignupModal = () => {
+  const closeSignupModal = async () => {
     setIsSignupModalVisible(false);
+    await onUserStateChange();
   };
 
   return (
