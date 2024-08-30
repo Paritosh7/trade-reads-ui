@@ -6,7 +6,7 @@ import Meta from "antd/lib/card/Meta";
 import Link from "next/link";
 
 import { getAllBooks } from "../../lib/fake-data";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import apiService from "@/app/services/apiService";
 
 export type BookType = {
@@ -16,15 +16,25 @@ export type BookType = {
   image_url: string;
 };
 
-const BookList = () => {
+interface BookListProps {
+  owner_id?: string | null;
+}
+
+const BookList: React.FC<BookListProps> = ({ owner_id }) => {
   const [books, setBooks] = useState<BookType[]>([]);
 
   // const books = getAllBooks();
 
   const fetchBooks = async () => {
-    const tempBooks = await apiService.get("/api/books/");
+    let url = "/api/books/";
 
-    setBooks(tempBooks);
+    if (owner_id) {
+      url += `?owner_id=${owner_id}`;
+    }
+
+    const tempBooks = await apiService.get(url);
+
+    setBooks(tempBooks.data);
   };
 
   useEffect(() => {
