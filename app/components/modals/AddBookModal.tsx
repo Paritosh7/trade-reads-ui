@@ -6,12 +6,14 @@ import {
   Form,
   Input,
   InputNumber,
+  Menu,
   Modal,
+  Tooltip,
   Upload,
   message, // Ant Design message component for notifications
 } from "antd";
 
-import { PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined, PlusCircleTwoTone } from "@ant-design/icons";
 const { TextArea } = Input;
 
 import { useRouter } from "next/navigation";
@@ -89,9 +91,15 @@ const AddBookModal: React.FC<AddBookProps> = ({
 
   return (
     <>
-      <div className="text-white cursor-pointer" onClick={showModal}>
-        Add your book
-      </div>
+      <Tooltip title="Add your book" placement="right">
+        <PlusCircleTwoTone
+          style={{ fontSize: 32 }}
+          className="text-white cursor-pointer"
+          onClick={showModal}
+        >
+          Add your book
+        </PlusCircleTwoTone>
+      </Tooltip>
       <Modal
         title="Add your book"
         open={isModalOpen}

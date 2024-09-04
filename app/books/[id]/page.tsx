@@ -4,12 +4,15 @@ import { FC, useEffect, useState } from "react";
 import { getBookById } from "../../lib/fake-data";
 import { Card, Col, Divider, Row, Space, message, Rate } from "antd";
 import Image from "next/image";
-import { EditOutlined, HeartOutlined } from "@ant-design/icons";
-import Meta from "antd/es/card/Meta";
 import Paragraph from "antd/es/typography/Paragraph";
 import Title from "antd/es/typography/Title";
 import apiService from "@/app/services/apiService";
 import Link from "next/link";
+import FavouriteButton from "@/app/components/FavouriteButton";
+import checkInterest from "@/app/lib/util-functions";
+import { getUserId } from "@/app/lib/actions";
+
+const { Grid, Meta } = Card;
 
 interface User {
   id: string;
@@ -25,6 +28,7 @@ interface Book {
   author: string;
   language: string;
   pages: number | null; // Pages can be null
+  interested: Array<string>;
   publisher: string;
   published_date: string | null; // Published date can be null
   image_url: string; // Assuming the image field is serialized as a URL
@@ -37,19 +41,12 @@ interface BookDetailsPageProps {
   };
 }
 
-const actions: React.ReactNode[] = [
-  <EditOutlined
-    style={{ fontSize: 16 }}
-    key="editReview"
-    onClick={editReview}
-    className="text-lg"
-  />,
-  <HeartOutlined
-    style={{ fontSize: 16 }}
-    key="wishlist"
-    onClick={addToWishlist}
-  />,
-];
+interface UserDetails {
+  avatar_url: string;
+  email: string;
+  id: string;
+  name: string;
+}
 
 function editReview() {
   message.info("Book review added");
@@ -62,7 +59,26 @@ function addToWishlist() {
 const BookDetailsPage: FC<BookDetailsPageProps> = ({ params: { id } }) => {
   // Fetch the book data based on the id
   const [book, setBook] = useState<Book | null>(null);
+  const [userId, setUserId] = useState("");
+  const [favourite, setFavourite] = useState(() => false);
+
   const [ellipsis, setEllipsis] = useState(true);
+
+  const is_wishlisted = checkInterest(book, userId);
+
+  const refetchBook = (fav: boolean) => {
+    console.log("favourite : ", fav);
+
+    setFavourite(fav);
+  };
+
+  const actions: React.ReactNode[] = [
+    <FavouriteButton
+      id={id}
+      is_interested={is_wishlisted}
+      update_favourite={refetchBook}
+    />,
+  ];
 
   useEffect(() => {
     const fetchBook = async () => {
@@ -74,6 +90,17 @@ const BookDetailsPage: FC<BookDetailsPageProps> = ({ params: { id } }) => {
     };
 
     fetchBook();
+  }, [favourite]);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const id = await getUserId();
+
+      if (id) {
+        setUserId(id);
+      }
+    };
+    fetchUser();
   }, []);
 
   if (!book) {
@@ -97,8 +124,13 @@ const BookDetailsPage: FC<BookDetailsPageProps> = ({ params: { id } }) => {
               body: {
                 display: "none",
               },
+              actions: {
+                transition: "background-color 0.3s ease",
+              },
             }}
-          ></Card>
+          >
+            <Grid hoverable></Grid>
+          </Card>
         </Col>
         <Col span={2} className="flex justify-center">
           <Divider type="vertical" className="h-full" />

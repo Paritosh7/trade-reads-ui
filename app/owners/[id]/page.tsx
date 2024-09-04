@@ -27,27 +27,18 @@ function contactOwner() {
   message.info("Contacting owner");
 }
 
-const actions: React.ReactNode[] = [
-  <MessageOutlined
-    title={`message me`}
-    style={{ fontSize: 16, color: "#fff" }}
-    key="editReview"
-    onClick={contactOwner}
-  ></MessageOutlined>,
-];
-
 const BookOwnerDetailPage: React.FC<UserDetailsPageProps> = ({
   params: { id },
 }) => {
-  const [user, setUserDetails] = useState<UserDetails | null>();
+  const [ownerDetails, setOwnerDetails] = useState<UserDetails | null>();
   const [userId, setUserId] = useState("");
 
   useEffect(() => {
-    const fetchBook = async () => {
+    const fetchOwner = async () => {
       const response = await apiService.get(`/api/auth/${id}`);
 
       if (response) {
-        setUserDetails(response);
+        setOwnerDetails(response);
       }
     };
 
@@ -59,8 +50,21 @@ const BookOwnerDetailPage: React.FC<UserDetailsPageProps> = ({
       }
     };
     fetchUser();
-    fetchBook();
+    fetchOwner();
   }, []);
+
+  const actions: React.ReactNode[] = [];
+
+  if (userId && userId !== id) {
+    actions.push(
+      <MessageOutlined
+        title="message me"
+        style={{ fontSize: 16, color: "#fff" }}
+        key="editReview"
+        onClick={contactOwner}
+      />
+    );
+  }
 
   return (
     <>
@@ -71,8 +75,8 @@ const BookOwnerDetailPage: React.FC<UserDetailsPageProps> = ({
               <Image
                 width={400}
                 height={400}
-                alt={user?.name || ""}
-                src={user?.avatar_url || ""}
+                alt={ownerDetails?.name || ""}
+                src={ownerDetails?.avatar_url || ""}
               ></Image>
             }
             actions={actions}
@@ -92,9 +96,9 @@ const BookOwnerDetailPage: React.FC<UserDetailsPageProps> = ({
         </Col>
         <Col span={16}>
           <Row className="flex-col">
-            <Title>{user?.name}</Title>
+            <Title>{ownerDetails?.name}</Title>
             <Title level={4} className="italic">
-              - {user?.email}
+              - {ownerDetails?.email}
             </Title>
           </Row>
           <Divider type="horizontal" className="w-full" />

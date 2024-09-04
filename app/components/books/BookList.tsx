@@ -26,6 +26,7 @@ const BookList: React.FC<BookListProps> = ({ owner_id }) => {
   // const books = getAllBooks();
 
   const fetchBooks = async () => {
+    console.log("owner_id : ", owner_id);
     let url = "/api/books/";
 
     if (owner_id) {
@@ -39,7 +40,7 @@ const BookList: React.FC<BookListProps> = ({ owner_id }) => {
 
   useEffect(() => {
     fetchBooks();
-  }, []);
+  }, [owner_id]);
 
   return (
     <ul className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-6">
