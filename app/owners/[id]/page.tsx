@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { getUserId } from "@/app/lib/actions";
 import Image from "next/image";
 import Title from "antd/es/typography/Title";
+import { useRouter } from "next/navigation";
 
 const { Meta } = Card;
 
@@ -23,15 +24,25 @@ interface UserDetails {
   name: string;
 }
 
-function contactOwner() {
-  message.info("Contacting owner");
-}
-
 const BookOwnerDetailPage: React.FC<UserDetailsPageProps> = ({
   params: { id },
 }) => {
   const [ownerDetails, setOwnerDetails] = useState<UserDetails | null>();
   const [userId, setUserId] = useState("");
+  const router = useRouter();
+
+  async function contactOwner() {
+    message.info("Contacting owner");
+    if (userId) {
+      const conversation = await apiService.get(
+        `/api/chat/start/${ownerDetails?.id}`
+      );
+
+      if (conversation.conversation_id) {
+        router.push(`/inbox/${conversation.conversation_id}`);
+      }
+    }
+  }
 
   useEffect(() => {
     const fetchOwner = async () => {

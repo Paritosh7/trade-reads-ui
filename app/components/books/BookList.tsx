@@ -18,9 +18,10 @@ export type BookType = {
 
 interface BookListProps {
   owner_id?: string | null;
+  is_wishlist?: boolean | null;
 }
 
-const BookList: React.FC<BookListProps> = ({ owner_id }) => {
+const BookList: React.FC<BookListProps> = ({ owner_id, is_wishlist }) => {
   const [books, setBooks] = useState<BookType[]>([]);
 
   // const books = getAllBooks();
@@ -31,6 +32,8 @@ const BookList: React.FC<BookListProps> = ({ owner_id }) => {
 
     if (owner_id) {
       url += `?owner_id=${owner_id}`;
+    } else if (is_wishlist) {
+      url += "?is_wishlist=True";
     }
 
     const tempBooks = await apiService.get(url);

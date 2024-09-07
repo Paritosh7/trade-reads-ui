@@ -25,8 +25,16 @@ const UserNav: React.FC<UserNavProps> = ({ userId, onUserStateChange }) => {
   const items: MenuProps["items"] = userId
     ? [
         {
-          key: "my books",
-          label: <Link href={"/mybooks/"}>my books</Link>,
+          key: "Inbox",
+          label: <Link href={"/inbox"}>Inbox</Link>,
+        },
+        {
+          key: "My books",
+          label: <Link href={"/mybooks"}>My books</Link>,
+        },
+        {
+          key: "My wishlist",
+          label: <Link href={"/wishlist"}>My wishlist</Link>,
         },
         {
           key: "logout",

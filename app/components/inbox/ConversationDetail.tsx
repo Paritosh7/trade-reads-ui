@@ -3,34 +3,139 @@ import { Card, Col, Grid, Input, Row } from "antd";
 import { Radio, Typography } from "antd";
 import CustomButton from "../forms/CustomButton";
 
+import { ConversationType } from "@/app/inbox/page";
+import React, { useEffect, useState, useRef } from "react";
+import useWebSocket, { ReadyState } from "react-use-websocket";
+import { MessageType } from "@/app/inbox/[id]/page";
+import { UserType } from "@/app/inbox/page";
+
+interface ConversationDetailProps {
+  userId: string;
+  token: string;
+  conversation: ConversationType;
+  messages: MessageType[];
+}
+
 const { Paragraph } = Typography;
 
-const ConversationDetail = () => {
+const ConversationDetail: React.FC<ConversationDetailProps> = ({
+  userId,
+  token,
+  messages,
+  conversation,
+}) => {
+  const messagesDiv = useRef(null);
+  const [newMessage, setNewMessage] = useState("");
+  const myUser = conversation.users?.find((user) => user.id == userId);
+  const otherUser = conversation.users?.find((user) => user.id != userId);
+  const [realTimeMessages, setRealTimeMessages] = useState<MessageType[]>([]);
+
+  const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(
+    `ws://127.0.0.1:8000/ws/${conversation.id}/?token=${token}`,
+    {
+      share: false,
+      shouldReconnect: () => true,
+    }
+  );
+
+  const scrollToBottom = () => {
+    if (messagesDiv.current) {
+      messagesDiv.current.scrollTop = messagesDiv.current.scrollHeight;
+    }
+  };
+
+  const sendMessage = async () => {
+    sendJsonMessage({
+      event: "chat_message",
+      data: {
+        body: newMessage,
+        name: myUser?.name,
+        sent_to_id: otherUser?.id,
+        conversation_id: conversation.id,
+      },
+    });
+
+    setNewMessage("");
+
+    setTimeout(() => {
+      scrollToBottom();
+    }, 50);
+  };
+
+  useEffect(() => {
+    console.log("Connection state changed", readyState);
+  }, [readyState]);
+
+  useEffect(() => {
+    if (
+      lastJsonMessage &&
+      typeof lastJsonMessage === "object" &&
+      "name" in lastJsonMessage &&
+      "body" in lastJsonMessage
+    ) {
+      const message: MessageType = {
+        id: "",
+        name: lastJsonMessage.name as string,
+        body: lastJsonMessage.body as string,
+        sent_to: otherUser as UserType,
+        created_by: myUser as UserType,
+        conversation_id: conversation.id,
+      };
+
+      setRealTimeMessages((realtimeMessages) => [...realtimeMessages, message]);
+    }
+
+    scrollToBottom();
+  }, [lastJsonMessage]);
+
   return (
     <>
-      <Row>
-        <Col className="bg-[#00000]" span={8}>
-          <Card className="text-black flex flex-col">
-            <Typography.Title level={5}>John Doe</Typography.Title>
-            <p>Hello! How are you?</p>
-          </Card>
-        </Col>
-      </Row>
-      <Row>
-        <Col span={8} offset={16}>
-          <Card className="bg-[#1777FF] text-white">
-            <Typography.Title level={5}>Elon</Typography.Title>
-            <p>I am good. How about ?</p>
-          </Card>
-        </Col>
-      </Row>
+      <div
+        ref={messagesDiv}
+        className="max-h-[400px] overflow-auto flex flex-col space-y-4"
+      >
+        {messages.map((message, index) => (
+          <div
+            key={index}
+            className={`w-[80%]py-4 px-6 rounded-xl ${
+              message.created_by.name == myUser?.name
+                ? "ml-[20%] bg-blue-200"
+                : "bg-gray-200"
+            }`}
+          >
+            <p className="font-bold text-gray-500">{message.created_by.name}</p>
+            <p>{message.body}</p>
+          </div>
+        ))}
+
+        {realTimeMessages.map((message, index) => (
+          <div
+            key={index}
+            className={`w-[80%]py-4 px-6 rounded-xl ${
+              message.name == myUser?.name
+                ? "ml-[20%] bg-blue-200"
+                : "bg-gray-200"
+            }`}
+          >
+            <p className="font-bold text-gray-500">{message.name}</p>
+            <p>{message.body}</p>
+          </div>
+        ))}
+      </div>
+
       <div className="mt-4 py-4 px-6 flex border border-gray-300 space-x-4 rounded-xl">
-        <Input placeholder="Input your message" />
+        <input
+          type="text"
+          placeholder="Type your message..."
+          className="w-full p-2 bg-gray-200 rounded-xl"
+          value={newMessage}
+          onChange={(e) => setNewMessage(e.target.value)}
+        />
 
         <CustomButton
           label="Send"
-          onClick={() => console.log("Send message was clicked")}
-          className="w-[100px] self-center"
+          onClick={sendMessage}
+          className="w-[100px]"
         />
       </div>
     </>
