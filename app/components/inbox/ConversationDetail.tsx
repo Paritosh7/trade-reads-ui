@@ -1,13 +1,12 @@
 "use client";
-import { Card, Col, Grid, Input, Row } from "antd";
-import { Radio, Typography } from "antd";
+import { Card, Col, Row, Input, Typography, Button, List } from "antd";
 import CustomButton from "../forms/CustomButton";
-
-import { ConversationType } from "@/app/inbox/page";
 import React, { useEffect, useState, useRef } from "react";
-import useWebSocket, { ReadyState } from "react-use-websocket";
+import useWebSocket from "react-use-websocket";
+import { ConversationType, UserType } from "@/app/inbox/page";
 import { MessageType } from "@/app/inbox/[id]/page";
-import { UserType } from "@/app/inbox/page";
+
+const { Title } = Typography;
 
 interface ConversationDetailProps {
   userId: string;
@@ -16,21 +15,20 @@ interface ConversationDetailProps {
   messages: MessageType[];
 }
 
-const { Paragraph } = Typography;
-
 const ConversationDetail: React.FC<ConversationDetailProps> = ({
   userId,
   token,
   messages,
   conversation,
 }) => {
-  const messagesDiv = useRef(null);
+  const messagesDiv = useRef<HTMLDivElement>(null);
   const [newMessage, setNewMessage] = useState("");
-  const myUser = conversation.users?.find((user) => user.id == userId);
-  const otherUser = conversation.users?.find((user) => user.id != userId);
   const [realTimeMessages, setRealTimeMessages] = useState<MessageType[]>([]);
 
-  const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(
+  const myUser = conversation.users?.find((user) => user.id == userId);
+  const otherUser = conversation.users?.find((user) => user.id != userId);
+
+  const { sendJsonMessage, lastJsonMessage } = useWebSocket(
     `ws://127.0.0.1:8000/ws/${conversation.id}/?token=${token}`,
     {
       share: false,
@@ -54,17 +52,9 @@ const ConversationDetail: React.FC<ConversationDetailProps> = ({
         conversation_id: conversation.id,
       },
     });
-
     setNewMessage("");
-
-    setTimeout(() => {
-      scrollToBottom();
-    }, 50);
+    setTimeout(scrollToBottom, 50);
   };
-
-  useEffect(() => {
-    console.log("Connection state changed", readyState);
-  }, [readyState]);
 
   useEffect(() => {
     if (
@@ -84,60 +74,146 @@ const ConversationDetail: React.FC<ConversationDetailProps> = ({
 
       setRealTimeMessages((realtimeMessages) => [...realtimeMessages, message]);
     }
-
     scrollToBottom();
   }, [lastJsonMessage]);
 
+  if (!messages.length && !realTimeMessages.length) {
+    return (
+      <>
+        <List></List>
+        <Row className="mt-4" style={{ marginTop: "20px" }}>
+          <Col span={20} offset={1}>
+            <Input
+              size="large"
+              placeholder="Type your message..."
+              value={newMessage}
+              onChange={(e) => setNewMessage(e.target.value)}
+              onPressEnter={sendMessage}
+            />
+          </Col>
+          <Col span={3}>
+            <Button
+              size="large"
+              // style={{ width: 100 }}
+              type="primary"
+              onClick={sendMessage}
+            >
+              Send
+            </Button>
+          </Col>
+        </Row>
+        ;
+      </>
+    );
+  }
+
   return (
     <>
+      {/* Chat Messages */}
       <div
         ref={messagesDiv}
-        className="max-h-[400px] overflow-auto flex flex-col space-y-4"
+        style={{
+          maxHeight: "500px",
+          overflowY: "auto",
+        }}
       >
         {messages.map((message, index) => (
-          <div
-            key={index}
-            className={`w-[80%]py-4 px-6 rounded-xl ${
-              message.created_by.name == myUser?.name
-                ? "ml-[20%] bg-blue-200"
-                : "bg-gray-200"
-            }`}
-          >
-            <p className="font-bold text-gray-500">{message.created_by.name}</p>
-            <p>{message.body}</p>
-          </div>
+          <Row key={index}>
+            <Col
+              span={8}
+              offset={message.created_by.name === myUser?.name ? 15 : 1}
+              style={{
+                maxWidth: "60%", // Limit bubble width for larger screens
+                wordWrap: "break-word", // Allow long words to break
+              }}
+            >
+              <div
+                style={{
+                  backgroundColor:
+                    message.created_by.name === myUser?.name
+                      ? "#1777FF"
+                      : "#f0f0f0",
+                  color:
+                    message.created_by.name === myUser?.name ? "#fff" : "#000",
+                  padding: "8px",
+                  borderRadius: "4px",
+                  marginBottom: "8px",
+                }}
+              >
+                <Title level={5} style={{ marginBottom: "2px" }}>
+                  {message.created_by.name}
+                </Title>
+                <p
+                  style={{
+                    maxWidth: "100%",
+                    marginBottom: "0",
+                  }}
+                >
+                  {message.body}
+                </p>
+              </div>
+            </Col>
+          </Row>
         ))}
 
         {realTimeMessages.map((message, index) => (
-          <div
-            key={index}
-            className={`w-[80%]py-4 px-6 rounded-xl ${
-              message.name == myUser?.name
-                ? "ml-[20%] bg-blue-200"
-                : "bg-gray-200"
-            }`}
-          >
-            <p className="font-bold text-gray-500">{message.name}</p>
-            <p>{message.body}</p>
-          </div>
+          <Row key={index}>
+            <Col
+              span={8}
+              offset={message.name === myUser?.name ? 15 : 1}
+              style={{
+                maxWidth: "60%",
+                wordWrap: "break-word",
+              }}
+            >
+              <div
+                style={{
+                  backgroundColor:
+                    message.name === myUser?.name ? "#1777FF" : "#f0f0f0",
+                  color: message.name === myUser?.name ? "#fff" : "#000",
+                  padding: "8px",
+                  borderRadius: "4px",
+                  marginBottom: "8px",
+                }}
+              >
+                <Title level={5} style={{ marginBottom: "2px" }}>
+                  {message.name}
+                </Title>
+                <p
+                  style={{
+                    maxWidth: "100%",
+                    marginBottom: "0",
+                  }}
+                >
+                  {message.body}
+                </p>
+              </div>
+            </Col>
+          </Row>
         ))}
       </div>
 
-      <div className="mt-4 py-4 px-6 flex border border-gray-300 space-x-4 rounded-xl">
-        <input
-          type="text"
-          placeholder="Type your message..."
-          className="w-full p-2 bg-gray-200 rounded-xl"
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-        />
-
-        <CustomButton
-          label="Send"
-          onClick={sendMessage}
-          className="w-[100px]"
-        />
-      </div>
+      <Row className="mt-4" style={{ marginTop: "20px" }}>
+        <Col span={20} offset={1}>
+          <Input
+            size="large"
+            placeholder="Type your message..."
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            onPressEnter={sendMessage}
+          />
+        </Col>
+        <Col span={3}>
+          <Button
+            size="large"
+            // style={{ width: 100 }}
+            type="primary"
+            onClick={sendMessage}
+          >
+            Send
+          </Button>
+        </Col>
+      </Row>
     </>
   );
 };

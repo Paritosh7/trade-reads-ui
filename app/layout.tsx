@@ -23,19 +23,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <AntdRegistry>
-          <Layout>
-            <Header className="flex items-center justify-between gap-2">
-              <Navbar />
-            </Header>
-            <Content className="mt-8 min-h-svh" style={{ padding: "0 48px" }}>
-              <ContentWrapper>{children}</ContentWrapper>
-            </Content>
-            <Footer style={{ textAlign: "center" }}>
-              TradeReads ©{new Date().getFullYear()} Build by Paritosh Sahni
-            </Footer>
-          </Layout>
-        </AntdRegistry>
+        <Layout>
+          <Header className="flex items-center justify-between gap-2">
+            <Navbar />
+          </Header>
+          <Content className="mt-8 min-h-svh" style={{ padding: "0 48px" }}>
+            <ContentWrapper>{children}</ContentWrapper>
+          </Content>
+          <Footer style={{ textAlign: "center" }}>
+            TradeReads ©{new Date().getFullYear()} Build by Paritosh Sahni
+          </Footer>
+        </Layout>
       </body>
     </html>
   );
