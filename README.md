@@ -81,16 +81,11 @@ Open [http://localhost:3000](http://localhost:3000) to view the app.
 
 ## Screenshots
 
-Place screenshots in the `public/screenshots/` directory.  
-Reference them in this section, for example:
-
-```md
-![Homepage](public/screenshots/home.png)
-![Book Detail](public/screenshots/book-detail.png)
-![Adding book](public/screenshots/add-book.png)
-![Selected Book](public/screenshots/added-book.png)
-![Chat](public/screenshots/chat.png)
-```
+<img src="/screenshots/home.png" alt="Homepage" height="250"/>
+<img src="/screenshots/book-detail.png" alt="Book Detail" height="250"/>
+<img src="/screenshots/add-book.png" alt="Adding book" height="250"/>
+<img src="/screenshots/added-book.png" alt="Selected Book" height="250"/>
+<img src="/screenshots/chat.png" alt="Chat" height="250"/>
 
 ---
 
