@@ -1,6 +1,6 @@
 # TradeReads UI (Frontend)
 
-This is the Next.js (React) frontend for the [TradeReads](../backend/README.md) book exchange platform. The UI enables users to browse, search, list, and wishlist books, as well as chat in real-time with other users. It is designed for seamless integration with the Django backend.
+This is the Next.js (React) frontend for the [TradeReads](https://github.com/Paritosh7/trade-reads-backend-app) book exchange platform. The UI enables users to browse, search, list, and wishlist books, as well as chat in real-time with other users. It is designed for seamless integration with the Django backend.
 
 ---
 
@@ -41,7 +41,7 @@ TradeReads UI provides a modern, responsive interface for discovering and exchan
 ### 1. Clone the Repository
 
 ```bash
-git clone <your-repo-url>
+git clone <repo-url>
 cd trade-reads-frontend
 ```
 
@@ -63,13 +63,13 @@ npm install
 
 ### 4. Run the Development Server
 
+Make sure the [TradeReads Backend](https://github.com/Paritosh7/trade-reads-backend-app) is running at the API host specified in your `.env.local` (default: `http://localhost:8000`).
+
 ```bash
 npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) to view the app.
-
----
 
 ## Project Structure
 
@@ -85,8 +85,10 @@ Place screenshots in the `public/screenshots/` directory.
 Reference them in this section, for example:
 
 ```md
-![Homepage](public/screenshots/homepage.png)
+![Homepage](public/screenshots/home.png)
 ![Book Detail](public/screenshots/book-detail.png)
+![Adding book](public/screenshots/add-book.png)
+![Selected Book](public/screenshots/added-book.png)
 ![Chat](public/screenshots/chat.png)
 ```
 
@@ -94,7 +96,7 @@ Reference them in this section, for example:
 
 ## Related Project
 
-- [TradeReads Backend (Django Rest Framework)](../backend/README.md)
+- [TradeReads Backend (Django Rest Framework)](https://github.com/Paritosh7/trade-reads-backend-app)
 
 ---
 
