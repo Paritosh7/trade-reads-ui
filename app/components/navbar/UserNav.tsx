@@ -78,7 +78,7 @@ const UserNav: React.FC<UserNavProps> = ({ userId, onUserStateChange }) => {
 
   return (
     <>
-      <Dropdown menu={{ items }}>
+      <Dropdown placement="bottomRight" menu={{ items }}>
         <Space wrap size={16}>
           <Avatar
             className="bg-[#1777FF] cursor-pointer"

@@ -243,7 +243,7 @@ const AddBookModal: React.FC<AddBookProps> = ({
 
       setOptions(searchOptions);
     } catch (error) {
-      console.error("Error fetching books from Google API", error);
+      message.error(`Please try again later, error fetching books : ${error}`);
     }
   };
 

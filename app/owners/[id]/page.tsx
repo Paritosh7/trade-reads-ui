@@ -108,9 +108,9 @@ const BookOwnerDetailPage: React.FC<UserDetailsPageProps> = ({
         <Col span={16}>
           <Row className="flex-col">
             <Title>{ownerDetails?.name}</Title>
-            <Title level={4} className="italic">
+            {/* <Title level={4} className="italic">
               - {ownerDetails?.email}
-            </Title>
+            </Title> */}
           </Row>
           <Divider type="horizontal" className="w-full" />
           <Row>
