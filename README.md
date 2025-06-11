@@ -81,10 +81,25 @@ Open [http://localhost:3000](http://localhost:3000) to view the app.
 
 ## Screenshots
 
+## Screenshots
+
+**Homepage**
+
 <img src="https://github.com/Paritosh7/trade-reads-ui/blob/ui-sprint-2/public/screenshots/home.png" alt="Homepage" height="250"/>
+
+**Book Detail**
+
 <img src="https://github.com/Paritosh7/trade-reads-ui/blob/ui-sprint-2/public/screenshots/book-detail.png" alt="Book Detail" height="250"/>
-<img src="https://github.com/Paritosh7/trade-reads-ui/blob/ui-sprint-2/public/screenshots/add-book.png" alt="Adding book" height="250"/>
-<img src="https://github.com/Paritosh7/trade-reads-ui/blob/ui-sprint-2/public/screenshots/added-book.png" alt="Selected Book" height="250"/>
+
+**Adding a Book & Selected Book**
+
+<div>
+  <img src="https://github.com/Paritosh7/trade-reads-ui/blob/ui-sprint-2/public/screenshots/add-book.png" alt="Adding book" height="250" style="display:inline-block; margin-right:10px;"/>
+  <img src="https://github.com/Paritosh7/trade-reads-ui/blob/ui-sprint-2/public/screenshots/added-book.png" alt="Selected Book" height="250" style="display:inline-block;"/>
+</div>
+
+**Chat**
+
 <img src="https://github.com/Paritosh7/trade-reads-ui/blob/ui-sprint-2/public/screenshots/chat.png" alt="Chat" height="250"/>
 
 ---
