@@ -18,18 +18,22 @@ export type BookType = {
 
 interface BookListProps {
   owner_id?: string | null;
+  is_wishlist?: boolean | null;
 }
 
-const BookList: React.FC<BookListProps> = ({ owner_id }) => {
+const BookList: React.FC<BookListProps> = ({ owner_id, is_wishlist }) => {
   const [books, setBooks] = useState<BookType[]>([]);
 
   // const books = getAllBooks();
 
   const fetchBooks = async () => {
+    console.log("owner_id : ", owner_id);
     let url = "/api/books/";
 
     if (owner_id) {
       url += `?owner_id=${owner_id}`;
+    } else if (is_wishlist) {
+      url += "?is_wishlist=True";
     }
 
     const tempBooks = await apiService.get(url);
@@ -39,7 +43,7 @@ const BookList: React.FC<BookListProps> = ({ owner_id }) => {
 
   useEffect(() => {
     fetchBooks();
-  }, []);
+  }, [owner_id]);
 
   return (
     <ul className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-6">

@@ -6,7 +6,7 @@ import { Breadcrumb, Layout, Menu, theme } from "antd";
 import { Content, Footer, Header } from "antd/es/layout/layout";
 import Navbar from "./components/navbar/NavBar";
 import ContentWrapper from "./components/wrapper/ContentWrapper";
-import BookList from "./components/books/BookList";
+import { AntdRegistry } from "@ant-design/nextjs-registry";
 
 const inter = Inter({ subsets: ["latin"] });
 

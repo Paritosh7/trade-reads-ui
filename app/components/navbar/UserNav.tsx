@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import { UserOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
@@ -6,6 +8,7 @@ import LoginModal from "../modals/LoginModal";
 import SignupModal from "../modals/SignupModal";
 import { useRouter } from "next/navigation";
 import { resetAuthCookies } from "@/app/lib/actions";
+import Link from "next/link";
 
 interface UserNavProps {
   userId?: string | null;
@@ -21,6 +24,18 @@ const UserNav: React.FC<UserNavProps> = ({ userId, onUserStateChange }) => {
 
   const items: MenuProps["items"] = userId
     ? [
+        {
+          key: "Inbox",
+          label: <Link href={"/inbox"}>Inbox</Link>,
+        },
+        {
+          key: "My books",
+          label: <Link href={"/mybooks"}>My books</Link>,
+        },
+        {
+          key: "My wishlist",
+          label: <Link href={"/wishlist"}>My wishlist</Link>,
+        },
         {
           key: "logout",
           label: <span onClick={() => submitLogout()}>Logout</span>,
@@ -39,7 +54,7 @@ const UserNav: React.FC<UserNavProps> = ({ userId, onUserStateChange }) => {
 
   const submitLogout = async () => {
     await resetAuthCookies();
-    onUserStateChange();
+    await onUserStateChange();
     router.refresh();
   };
 
@@ -63,7 +78,7 @@ const UserNav: React.FC<UserNavProps> = ({ userId, onUserStateChange }) => {
 
   return (
     <>
-      <Dropdown menu={{ items }}>
+      <Dropdown placement="bottomRight" menu={{ items }}>
         <Space wrap size={16}>
           <Avatar
             className="bg-[#1777FF] cursor-pointer"
@@ -75,6 +90,7 @@ const UserNav: React.FC<UserNavProps> = ({ userId, onUserStateChange }) => {
       </Dropdown>
       <LoginModal visible={isLoginModalVisible} onClose={closeLoginModal} />
       <SignupModal visible={isSignupModalVisible} onClose={closeSignupModal} />
+      <></>
     </>
   );
 };

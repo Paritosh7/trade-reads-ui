@@ -35,12 +35,10 @@ export async function resetAuthCookies() {
 
 export async function getUserId() {
   const userId = cookies().get("session_userid")?.value;
-  console.log("userId inside getUserId", userId);
   return userId ? userId : null;
 }
 
 export async function getAccessToken() {
   let accessToken = cookies().get("session_access_token")?.value;
-  console.log(accessToken);
   return accessToken;
 }
